@@ -23,7 +23,7 @@ public class VeiculoView implements IView {
     }
 
     public VeiculoRequestDTO lerDadosVeiculo() {
-        System.out.println("=== Cadastro de Veículo ===");
+        System.out.println("=== CADASTRO DE VEICULOS ===");
 
         System.out.print("Placa: ");
         String placa = scanner.nextLine();
@@ -39,10 +39,17 @@ public class VeiculoView implements IView {
         scanner.nextLine(); // limpar buffer
 
         return new VeiculoRequestDTO(placa, modelo, ano, valor);
+        
     }
 
 
-    private void exibirDetalhes(Veiculo veiculo) {
-        //implementar
+    public void exibirDetalhes(Veiculo veiculo) {
+    	System.out.println("\n--- DADOS DO VEÍCULO CADASTRADO ---");
+        System.out.println("ID: " + veiculo.getCodigo());
+        System.out.println("Placa: " + veiculo.getPlaca());
+        System.out.println("Modelo: " + veiculo.getModelo());
+        System.out.println("Ano: " + veiculo.getAno());
+        System.out.println("Valor: R$ " + String.format("%.2f", veiculo.getValor()));
+        System.out.println("--------------------------------------");
     }
 }

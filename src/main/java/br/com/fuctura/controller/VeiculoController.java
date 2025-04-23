@@ -1,12 +1,17 @@
 package br.com.fuctura.controller;
 
+import java.sql.SQLException;
+
 import br.com.fuctura.br.com.fuctura.service.VeiculoService;
 import br.com.fuctura.controller.request.VeiculoRequestDTO;
 import br.com.fuctura.dto.VeiculoDTO;
+import br.com.fuctura.entidade.Veiculo;
 
 public class VeiculoController {
 
     private final VeiculoService veiculoService;
+    private Veiculo ultimoVeiculoCadastrado;
+    
 
     public VeiculoController(VeiculoService veiculoService) {
         this.veiculoService = veiculoService;
@@ -17,6 +22,11 @@ public class VeiculoController {
         var veiculoDTO = convertToVeiculoDTO(requestDTO);
 
         veiculoService.salvar(veiculoDTO);
+        
+    }
+    
+    public Veiculo getUltimoVeiculoCadastrado() {
+        return veiculoService.getUltimoVeiculoCadastrado();
     }
 
     private VeiculoDTO convertToVeiculoDTO(VeiculoRequestDTO requestDTO) {
@@ -27,4 +37,8 @@ public class VeiculoController {
         veiculoDTO.setValor(requestDTO.getValor());
         return veiculoDTO;
     }
+    public Veiculo buscarVeiculoPorCodigo(int codigo) throws SQLException {
+        return veiculoService.buscarVeiculoPorCodigo(codigo);
+    }
+    
 }

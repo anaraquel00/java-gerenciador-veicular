@@ -2,7 +2,9 @@ package br.com.fuctura.view;
 
 import br.com.fuctura.controller.request.VeiculoRequestDTO;
 import br.com.fuctura.entidade.Veiculo;
+import br.com.fuctura.repository.VeiculoLojaDTO;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class VeiculoView implements IView {
@@ -52,4 +54,24 @@ public class VeiculoView implements IView {
         System.out.println("Valor: R$ " + String.format("%.2f", veiculo.getValor()));
         System.out.println("--------------------------------------");
     }
+    
+    public void exibirVeiculos(List<VeiculoLojaDTO> veiculos) {
+        if (veiculos.isEmpty()) {
+            System.out.println("Nenhum resultado encontrado!");
+            return;
+        }
+
+        System.out.println("\n| Placa    | Modelo    | Ano  | Loja                 | Vendedor       |");
+        System.out.println("|----------|-----------|------|----------------------|----------------|");
+        
+        for (VeiculoLojaDTO v : veiculos) {
+            System.out.printf("| %-8s | %-9s | %-4d | %-20s | %-14s |%n",
+                    v.getPlaca(),
+                    v.getModelo(),
+                    v.getAno(),
+                    v.getLoja(),
+                    v.getVendedor());
+        }
+    }
+    
 }

@@ -119,4 +119,56 @@ public class VeiculoRepository {
     	
       }
     }
+
+    // Método para buscar por vendedor
+    public List<VeiculoLojaDTO> buscarPorVendedor(String nomeVendedor) throws SQLException {
+        List<VeiculoLojaDTO> resultados = new ArrayList<>();
+        String sql = """
+            SELECT v.placa, v.modelo, v.ano, l.nome AS loja, l.vendedor 
+            FROM veiculo v
+            JOIN loja l ON v.cod_loja = l.codigo
+            WHERE l.vendedor ILIKE ?""";
+
+        try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
+            stmt.setString(1, "%" + nomeVendedor + "%");
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    resultados.add(new VeiculoLojaDTO(
+                        rs.getString("placa"),
+                        rs.getString("modelo"),
+                        rs.getInt("ano"),
+                        rs.getString("loja"),
+                        rs.getString("vendedor")
+                    ));
+                }
+            }
+        }
+        return resultados;
+    }
+
+    // Método para listar todos com dados da loja
+    public List<VeiculoLojaDTO> listarTodosComLoja() throws SQLException {
+        List<VeiculoLojaDTO> resultados = new ArrayList<>();
+        String sql = """
+            SELECT v.placa, v.modelo, v.ano, l.nome AS loja, l.vendedor 
+            FROM veiculo v
+            JOIN loja l ON v.cod_loja = l.codigo""";
+
+        try (PreparedStatement stmt = conexao.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            
+            while (rs.next()) {
+                resultados.add(new VeiculoLojaDTO(
+                    rs.getString("placa"),
+                    rs.getString("modelo"),
+                    rs.getInt("ano"),
+                    rs.getString("loja"),
+                    rs.getString("vendedor")
+                ));
+            }
+        }
+        return resultados;
+    }
+
 }

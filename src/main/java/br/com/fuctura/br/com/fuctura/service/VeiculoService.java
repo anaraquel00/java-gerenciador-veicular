@@ -4,9 +4,11 @@ import br.com.fuctura.controller.request.VeiculoRequestDTO;
 import br.com.fuctura.dao.VeiculoDAO;
 import br.com.fuctura.dto.VeiculoDTO;
 import br.com.fuctura.entidade.Veiculo;
+import br.com.fuctura.repository.VeiculoLojaDTO;
 import br.com.fuctura.repository.VeiculoRepository;
 
 import java.sql.SQLException;
+import java.util.List;
 
 
 
@@ -18,7 +20,7 @@ public class VeiculoService {
         this.veiculoDAO = veiculoDAO;
     }
     
-    public Veiculo converterParaEntidade(VeiculoRequestDTO dto) {
+   	public Veiculo converterParaEntidade(VeiculoRequestDTO dto) {
         Veiculo veiculo = new Veiculo();
         veiculo.setPlaca(dto.getPlaca());
         veiculo.setModelo(dto.getModelo());
@@ -27,15 +29,11 @@ public class VeiculoService {
         return veiculo;
     }
 
-    public void salvar(VeiculoDTO veiculoDTO){
+    public void salvar(VeiculoDTO veiculoDTO) throws SQLException{
         Veiculo veiculo = convertTOVeiculo(veiculoDTO);
 
-        try {
-            veiculoDAO.salvar(veiculo);
-            System.out.println("Veiculo salvo com sucesso!");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        veiculoDAO.salvar(veiculo);
+		System.out.println("Veiculo salvo com sucesso!");
 
     }
 
@@ -53,6 +51,22 @@ public class VeiculoService {
             throw new IllegalArgumentException("Código inválido");
         }
         return repository.buscarVeiculoPorCodigo(codigo);
+    }
+    
+    public List<VeiculoLojaDTO> buscarPorVendedor(String nomeVendedor) {
+        try {
+            return repository.buscarPorVendedor(nomeVendedor);
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro na pesquisa", e);
+        }
+    }
+
+    public List<VeiculoLojaDTO> listarTodosComLoja() {
+        try {
+            return repository.listarTodosComLoja();
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao listar veículos", e);
+        }
     }
 
 }
